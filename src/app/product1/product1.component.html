@@ -1,0 +1,77 @@
+<html lang="en">
+
+    <head>
+      <meta charset="UTF-8">
+    
+      <meta name="viewport" content="width=
+      , initial-scale=1.0">
+      <title>Document</title>
+    </head>
+    
+    <body >
+      <div class="title container-fluid">
+        <div class="col-sm-3 col-md-6 col-lg-7 title_text">Time series forecasting</div>
+        <div class="col-5 title_date"><span>Date: {{today | date:'dd-MM-yyyy '}}</span> <span
+            style="padding-left: 112px;">Time: {{today | date:'hh:mm:ss a':'+0530'}}</span> </div>
+      </div>
+      <div class="charts col-lg-10">
+        <!-- {{userforms | json}} -->
+        <!-- <h2>{{ title }}</h2> -->
+        <!-- {{testing | json}} -->
+    <br>
+        <div >
+        
+            <!-- <input type="number" class="ml-2" [(ngModel)]="n" style="margin-left: 12px;width: 49px;"/></p><br> -->
+          <input type="file"  name="FileUpload"  id="csvFileUpload" (change)="fileChangeListener($event)"
+            accept=".csv" #fileImportInput/>
+          
+          <!-- <svg width="1800" height="900"  style="fill:none"></svg> -->
+          <div class="container">
+            <!-- <h3 class="mt-2">{{ title }}</h3> -->
+            <div class="row">
+              <div class="col-sm" style="margin: 30px;">
+                <div id="barChart" style="min-width: 310px; max-width: 1000px; height: 400px; margin: 0 auto"></div>
+                <h5 class="card-title text-center"></h5>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2" style="margin-left: 0%;position: relative;
+      left: -37px;">
+        <div class="side_panel col-lg-2">
+            <div style="margin-top: 50px;">
+              <form #userform="ngForm" (ngSubmit)="onSubmit()" novalidate>
+                <mat-form-field style="font-size: 18px!important;">
+                  <mat-label style="font-size: 20px;">locations</mat-label>
+                  <mat-select [(ngModel)]="LocationValue"  [(ngModel)]="userforms.location" multiple  name="locations" >
+                    <mat-option value="Banjara hills">Banjara hills</mat-option>
+                    <mat-option value="KPHB">KPHB</mat-option>
+                    <mat-option value="Panjagutta">Panjagutta</mat-option>
+                  </mat-select>
+        
+                </mat-form-field>
+                <mat-form-field style="font-size: 18px!important;">
+        
+                  <mat-label style="font-size: 20px;">Products</mat-label>
+                  <mat-select [(ngModel)]="ProductValue"  [(ngModel)]="userforms.product"  multiple name="products">
+                    <mat-option value="100 ML Butterscotch">ML Butterscotch</mat-option>
+                    <mat-option value="250 ML Cornetto Snekers">Cornetto Snekers</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                  
+                <p style="margin-top: 50px;font-size: 14px;  font-weight: 700;display: block;
+                width: max-content"><span>Future Forcast Weeks</span></p>
+                <input type="text" [(ngModel)]="userforms.data" [(ngModel)]="week" name="weeks">
+                <!-- <p style="margin-top: 50px;font-size: 15px;  font-weight: 700;">confidence interval</p>
+                <input type="text"  name="interval"> -->
+                <br><br>
+                <button  class="btn btn-primary text-center" type="submit" style="margin-top: 15vh;">Submit</button>
+                </form>
+            </div>
+          </div>
+      </div>
+    </body>
+    
+    </html>

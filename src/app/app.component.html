@@ -1,0 +1,40 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=
+  , initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body style="background-color:rgb(230,247,255);">
+
+
+  <div class=" col-lg-1" style="background-color: lightgray; height: 100%;">
+    <div style="margin-top: 30VH!IMPORTANT;">
+      <a [routerLink]="['/Product1-component']" style="font-size: 17px;font-weight: 700;color: black;">Time series
+        forecasting</a><br><br>
+      <a [routerLink]="['/incremantalsales']" style="font-size: 17px;font-weight: 700;color: black;">Incremental sales
+        volume</a>
+    </div>
+  </div>
+  <div class="charts col-lg-11">
+    <br>
+    <div>
+
+
+      <div>
+
+        <div class="row" style="margin-top: -20px;">
+          <router-outlet ></router-outlet>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
