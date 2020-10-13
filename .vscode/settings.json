@@ -1,0 +1,8 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/fd1e128e-b199-4b25-b7bc-c87ee5c9a3ed/resourceGroups/AngularJs/providers/Microsoft.Web/sites/topwebapp",
+    "appService.deploySubpath": "dist\\TPO",
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ]
+}

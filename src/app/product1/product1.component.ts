@@ -20,9 +20,13 @@ export class Product1Component implements OnInit {
 
 
   ngOnInit(): void {
+    setInterval(() => {
+      this.time = new Date();
+   }, 1000);
   }
   n;
   week;
+  week2;
   maxdate;
   j;
   display;
@@ -31,14 +35,14 @@ export class Product1Component implements OnInit {
   newforcast: any[] = [];
   test: any[] = [];
   header = false;
-  public title = 'Line Chart';
-  public today = new Date();
-  public time = new Date().getTime;
+ title = 'Line Chart';
+   today = new Date();
+   time;
   LocationValue;
-  ProductValue;
+  ProductValue=[];
   forcastvalues: any[];
   userforms = new Details();
-  csvRecords: any[] = [];
+  csvRecords: any[]=[];
   jsondata;
   jsonObj: any[] = [];
   jsonObj2: any[] = [];
@@ -55,6 +59,10 @@ export class Product1Component implements OnInit {
   testing;
   temp2;
   temp3;
+  d:any[]=[];
+  products=[];
+  tempobj:any=[];
+  z=0;
   private line: d3Shape.Line<[number, number]>; // this is line defination
   private line2: d3Shape.Line<[number, number]>;
   constructor(private forcast: ForcastServiceService, private ngxCsvParser: NgxCsvParser) {
@@ -64,53 +72,69 @@ export class Product1Component implements OnInit {
 
 
   onSubmit() {
-    var d = new Details();
-    d.data = Number(this.week);
-    d.product = this.ProductValue[0];
-    d.location = this.LocationValue[0];
-    this.jsonObj = this.tempdata;
+    for(var i=0;i<=this.ProductValue.length;i++){
+     this.d[i] = new Details();
+    this.d[i].data = Number(this.week);
+    this.d[i].product = this.ProductValue[i];
+    this.d[i].location = this.LocationValue[0];
+    }
+  
+  
+    for(var i=0; i<this.ProductValue.length;i++)
+    {
+      this.jsonObj = this.tempdata;
     this.jsonObj2 = this.tempdata;
-    this.jsonObj = this.jsonObj.filter((f) => { return f.LocatHierachyNode == this.LocationValue && f.productcatogery == this.ProductValue });
-    this.jsonObj2 = this.jsonObj2.filter((f) => { return f.LocatHierachyNode == this.LocationValue && f.productcatogery == this.ProductValue });
-    this.forcast.enroll(d).subscribe(data => {
-      console.log(data, "test")
-      console.log(data[1], "test32");
-      var temp1 = data[0];
+    this.tempobj[i]=this.tempdata;
+      this.jsonObj = this.jsonObj.filter((f) => { return f.LocatHierachyNode == this.LocationValue && f.productcatogery == this.ProductValue[i] });
+      this.jsonObj2 = this.jsonObj2.filter((f) => { return f.LocatHierachyNode == this.LocationValue && f.productcatogery == this.ProductValue[i] });
+      this.tempobj[i]=this.tempobj[i].filter((f) => { return f.LocatHierachyNode == this.LocationValue && f.productcatogery == this.ProductValue[i] });
+    this.forcast.enroll(this.d[i]).subscribe(data => {
+      console.log(data,"test");
+      console.log(data[1],"test32");
+      var temp1  = data[0];
+      console.log(temp1,"temp1");
       this.temp2 = data[1];
+      console.log(this.temp2,"temp2");
       this.temp3 = data[2];
+      console.log(this.temp3,"temp3");
       this.l = data.length;
       this.newforcast.push(this.jsonObj[this.jsonObj.length - 1]);
-      for (this.j = 0, this.week = 1; this.j < data[1].length; this.j++) {
-        let temparray;
-        var forcast2 = new ForcastValues();
-        var forcasting = new Forcasting();
-        forcasting.TotFactoredVolume = Math.round(temp1[this.j]).toString();
-        forcast2.TotFactoredVolume = Math.round(temp1[this.j]).toString();
-        var testDate = new Date("12-30-2019");
-        var weekInMilliseconds = (7 * 24 * 60 * 60 * 1000) * this.week;
+      
+        for (this.j = 0, this.week2 = 1; this.j < data[1].length; this.j++) {
+          let temparray;
+          var forcast2 = new ForcastValues();
+          var forcasting = new Forcasting();
+          forcasting.TotFactoredVolume = Math.round(temp1[this.j]).toString();
+          forcast2.TotFactoredVolume = Math.round(temp1[this.j]).toString();
+          var testDate = new Date("12-30-2019");
+          var weekInMilliseconds = (7 * 24 * 60 * 60 * 1000) * this.week2;
+  
+          testDate.setTime(testDate.getTime() + weekInMilliseconds);
+          let d5 = testDate;
+          const monthNames = ["Jan", "Feb", "March", "Apr", "May", "June",
+            "July", "Aug", "Sep", "Oct", "Nov", "December"
+          ];
+          var maxds: string = d5.getFullYear() + "-" + (monthNames[d5.getMonth()]) + "-" + d5.getDate();
+  
+          forcast2.date = maxds;
+          forcasting.date = maxds;
+          this.newforcast.push(JSON.parse(JSON.stringify(forcasting)));
+          this.jsonObj.push(JSON.parse(JSON.stringify(forcasting)));
+          this.tempobj[i].push(JSON.parse(JSON.stringify(forcasting)));
+          this.week2++;
+          
+        }  
 
-        testDate.setTime(testDate.getTime() + weekInMilliseconds);
-        let d5 = testDate;
-
-        console.log(d5, "d5date")
-        const monthNames = ["Jan", "Feb", "March", "Apr", "May", "June",
-          "July", "Aug", "Sep", "Oct", "Nov", "December"
-        ];
-        var maxds: string = d5.getFullYear() + "-" + (monthNames[d5.getMonth()]) + "-" + d5.getDate();
-        console.log(testDate, "date")
-        forcast2.date = maxds;
-        forcasting.date = maxds;
-
-        this.newforcast.push(JSON.parse(JSON.stringify(forcasting)));
-        this.jsonObj.push(JSON.parse(JSON.stringify(forcasting)));
-        this.week++;
-      }
-
-      console.log(this.forcast.getDetails(), "getDetails")
-      this.barChartPopulation();
+         this.barChart(this.ProductValue[this.z],this.tempobj[this.z]); 
+         console.log(this.z,"aaaa") 
+         this.z++;
+     
+         console.log(this.z,"aaaaa") 
+ 
 
     }, error => console.log('e', error));
-
+   
+  }
   }
 
 
@@ -151,9 +175,7 @@ export class Product1Component implements OnInit {
       for (var j = 0; j < l; j++)
         o[cols[j]] = d[j];
       formatted.push(o);
-
     }
-
     this.jsondata = JSON.stringify(formatted);
     console.log(data, "test")
     this.jsonObj = JSON.parse(this.jsondata);
@@ -168,7 +190,12 @@ export class Product1Component implements OnInit {
 
 
 
-  barChartPopulation() {
+  barChart(pro,tempobj) {
+    console.log(this.jsonObj,"testobj");
+    console.log(this.jsonObj2,"testobj2");
+    console.log(typeof(this.jsonObj,"tst"));
+    console.log(typeof(this.jsonObj2,"tst"));
+    console.log(pro,"check")
     var d = [];
     for (var i = 0; i < this.jsonObj.length; i++) {
       d.push(Number(this.jsonObj[i].TotFactoredVolume))
@@ -178,13 +205,11 @@ export class Product1Component implements OnInit {
     var n5 = []
     var maxd = new Date(this.jsonObj[this.jsonObj.length - 1].date)
     var maxds: string = maxd.getFullYear() + "-" + (maxd.getMonth() + 1) + "-" + maxd.getDate();
-    for (var i = 0; i < this.jsonObj.length; i++) {
-      n5.push(new Date(this.jsonObj[i].date))
+    for (var i = 0; i < this.tempobj.length; i++) {
+      n5.push(new Date(this.tempobj[i].date));
     }
 
-    console.log(Date.UTC(2017, 0), "kg2")
-
-    Highcharts.chart('barChart', {
+    Highcharts.chart(pro, {
       chart: {
         type: 'line'
       },

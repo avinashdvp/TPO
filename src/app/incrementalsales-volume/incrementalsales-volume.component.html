@@ -13,7 +13,7 @@
   <div class="title container-fluid">
     <div class="col-sm-3 col-md-6 col-lg-7 title_text">Incremental sales volume</div>
     <div class="col-5 title_date"><span>Date: {{today | date:'dd-MM-yyyy '}}</span> <span
-        style="padding-left: 112px;">Time: {{today | date:'hh:mm:ss a':'+0530'}}</span> </div>
+        style="padding-left: 112px;">Time: {{time | date:'hh:mm:ss a':'+0530'}}</span> </div>
   </div>
   <div class="charts col-lg-10">
     <br>
@@ -23,10 +23,12 @@
       <div class="">
         <div class="row">
           <div style="margin: 30px;">
-            <div id="barChart" style="min-width: 600px; max-width: 1000px; height: 400px; margin: 0 auto;float: left;">
+            
+            <div  *ngFor="let product of ProductValue" id={{product}} style="min-width: 600px; max-width: 1000px; height: 400px; margin: 0 auto;float: left;">
+            
             </div>
-            <div id="barChart2"
-              style="min-width: 200px; margin-left:101px!important;max-width: 1000px; height: 400px; margin: 0 auto;float: left;">
+            <div *ngFor="let product of ProductValue" id={{product+1}}
+              style="margin-top: 20px;min-width: 200px; margin-left:101px!important;max-width: 1000px; height: 400px; margin: 0 auto;float: left;">
             </div>
 
             <h5 class="card-title text-center"></h5>

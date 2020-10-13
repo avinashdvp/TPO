@@ -12,8 +12,8 @@ import { ForcastServiceService } from '../forcast-service.service';
 })
 export class IncrementalsalesVolumeComponent implements OnInit {
   public today=new Date();
-  public time= new Date().getTime;
-  ProductValue: any;
+ time;
+  ProductValue=[];
   LocationValue: any;
   tempdata: any;
   jsonObj: any;
@@ -39,29 +39,43 @@ uniqueproductsarray:any[]=[];
   constructor(private forcast:ForcastServiceService,private ngxCsvParser: NgxCsvParser) { }
 
   ngOnInit(): void {
+    setInterval(() => {
+      this.time = new Date();
+   }, 1000);
   }
 
   onSubmit()
   {
-    
+
+for(var i=0 ;i <= this.ProductValue.length-1;i++){
+  this.totalsales=0;
+  this.basevolume=0;
+  this.incrementalsales=0;
+  this.lift=0;
+  this.tfv=0;
     var d= new Details();
     d.data=Number(this.week);
-    d.product=this.ProductValue[0];
+    d.product=this.ProductValue[i];
+    console.log(this.ProductValue[i],"check1")
     d.location =this.LocationValue[0];
+
     this.jsonObj=this.tempdata;
-    this.jsonObj=this.tempdata;
-    this.jsonObj.filter((f)=>{this.productsarray.push(f.productcatogery)});
-    console.log(this.productsarray,"productsarray");
-    this.productsarray.forEach((c) => {
-      if (!this.uniqueproductsarray.includes(c)) {
-          this.uniqueproductsarray.push(c);
-      }
-  });
-  console.log(this.uniqueproductsarray,"uparray");
-  
-    this.jsonObj=this.jsonObj.filter((f)=>{return f.LocatHierachyNode == this.LocationValue && f.productcatogery == this.ProductValue});
-   this.jsonObj2=this.jsonObj.filter((f)=>{return f.LocatHierachyNode == this.LocationValue && f.productcatogery == this.ProductValue});//&& f.productcatogery =="100 ML Butterscotch"
+    // this.jsonObj2=this.tempdata;
+    // console.log(this.tempdata,"check3");
+  //   this.jsonObj.filter((f)=>{this.productsarray.push(f.productcatogery)});
+  //   console.log(this.productsarray,"productsarray");
+  //   this.productsarray.forEach((c) => {
+  //     if (!this.uniqueproductsarray.includes(c)) {
+  //         this.uniqueproductsarray.push(c);
+  //     }
+  // });
+  // console.log(this.uniqueproductsarray,"uparray");
+
+ this.jsonObj=this.jsonObj.filter((f)=>{return f.LocatHierachyNode == this.LocationValue && f.productcatogery == this.ProductValue[i]});
+ console.log(this.jsonObj,"check2");
+ this.jsonObj2=this.jsonObj.filter((f)=>{return f.LocatHierachyNode == this.LocationValue && f.productcatogery == this.ProductValue[i]});//&& f.productcatogery =="100 ML Butterscotch"
  this.jsonObj=this.jsonObj.filter((f)=>{return new Date(f.date)>= new Date(this.startdate) && new Date(f.date)<=new Date(this.enddate) });
+//  console.log(this.jsonObj,"check")
  this.jsonObj.filter((f)=>{ console.log(f.date2);this.totalsales = this.totalsales+ Number(Number(f.date2).toFixed(2))});
  this.jsonObj.filter((f)=>{ console.log(f.SeasonalVolume);this.basevolume = this.basevolume+ Number(Number(f.SeasonalVolume).toFixed(2))});
  this.jsonObj.filter((f)=>{ console.log(f.TotFactoredVolume);this.tfv = this.tfv+ Number(Number(f.TotFactoredVolume).toFixed(2))});
@@ -74,9 +88,9 @@ console.log(this.incrementalsales,"insales")
 
  console.log(this.lift,"totsales");
  console.log(this.jsonObj,"dates");
- this.barChart();
+ this.barChart(this.ProductValue[i]);
   
-  }
+  }}
 
 
 
@@ -131,9 +145,8 @@ arrayToJSONObject (csvRecords){
  console.log(this.forcast.getLocation(),"datatest2");
 
 }
-barChart() {
-
- Highcharts.chart('barChart', {
+barChart(pro) {
+ Highcharts.chart(pro, {
    chart: {
     type: 'column'
    },
@@ -185,7 +198,7 @@ plotOptions: {
    
   
  });
- Highcharts.chart('barChart2', {
+ Highcharts.chart((pro +1), {
   chart: {
    type: 'column'
   },
